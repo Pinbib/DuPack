@@ -134,7 +134,7 @@ if (arg.length > 1) {
                     "variable": [
                         {
                             "name": "du",
-                            "value": "${JSON.parse(fs.readFileSync(path.join(main, "package.json"), { encoding: "utf-8" })).version}"
+                            "value": "${JSON.parse(fs.readFileSync("./package.json", { encoding: "utf-8" })).version}"
                         }
                     ],
                     "type": "${type}"
