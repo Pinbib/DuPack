@@ -8,7 +8,7 @@ DuPack - It's like a package manager (in the future) also a program that can spe
 
 There are six commands in total: request, version, new, run, install, update.
 
-After installation, go to the directory where it was installed and find the du.exe file there and run it, you should have a du.bat file created (if errors occur, run the file again). move du.bat to the C:/Windows/System32 folder (starting with version DuScript@0.3.0 the file created by DuScriptWindows.exe was renamed from du.bat to dus.bat if you use a younger version of DuScript, just delete the old file du .bat and put a new one), after you have transferred the file, go to the terminal and execute the command ``` do version ```if there are errors, read everything again and make sure that you did everything correctly.
+After installation, go to the directory where it was installed and find the du.exe file there and run it, you should have a du.bat file created (if errors occur, run the file again). move du.bat to the C:/Windows/System32 folder (starting with version DuScript@0.3.0 the file created by DuScriptWindows.exe was renamed from du.bat to dus.bat if you use a younger version of DuScript, just delete the old file du .bat and put a new one), after you have transferred the file, go to the terminal and execute the command ``` du version ```if there are errors, read everything again and make sure that you did everything correctly.
 
 # update
 
