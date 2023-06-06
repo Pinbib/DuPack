@@ -1,0 +1,23 @@
+{
+  "name": "dupack",
+  "version": "0.0.1",
+  "description": "It's like a package manager (in the future) also a program that can speed up the creation of \"du\" programs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo :)",
+    "start": "node index"
+  },
+  "type": "module",
+  "keywords": [
+    "du",
+    "DuScript",
+    "duScript",
+    "duPack"
+  ],
+  "author": "PinBib",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "prompt-sync": "^4.2.0"
+  }
+}
