@@ -1,4 +1,4 @@
-const VERSION = "0.3.0";
+const VERSION = "0.0.3";
 
 import chalk from 'chalk';
 import { exec } from 'child_process';
