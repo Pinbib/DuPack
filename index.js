@@ -1,4 +1,4 @@
-const VERSION = "0.0.3";
+const VERSION = "0.0.4";
 
 import chalk from 'chalk';
 import { exec } from 'child_process';
@@ -187,139 +187,67 @@ if (arg.length > 1) {
     } else if (arg[2] == "run") {
         let src = arg.slice(3).join(" ");
 
-        if (/\.[^.]+$/.test(src)) {
-            let file = fs.readFileSync(src, { encoding: "utf-8" }).split(";")[0].replace(/^\s+|\s+$|\s/gm, "");
-            if (file == "//duscript") {
-
-                if (fs.existsSync("./src/dus.src")) {
-                    let sr = fs.readFileSync("./src/dus.src", { encoding: "utf-8" });
-                    let v = JSON.parse(fs.readFileSync(path.join(sr, "package.json"))).version;
-                    console.log(chalk.white.bold("DuScript@" + v + ": \n"));
-                } else {
-                    console.log(chalk.white.bold("DuScript: \n"));
-                }
-
-                exec("where dus", (error, stdout, stderr) => {
-                    if (error) {
-                        console.error(`${error.message}`);
-                        return;
-                    }
-
-                    if (stderr || stdout.includes('Could not find files')) {
-                        if (fs.existsSync("./save/dus.src")) {
-                            exec(`node ${path.join(fs.readFileSync("./src/dus.src", { encoding: "utf-8" }), "duScript.js")} ${src}`, (error, stdout, stderr) => {
-                                if (error) {
-                                    console.error(`${error.message}`);
-                                    return;
-                                }
-
-                                if (stderr) {
-                                    console.error(`${stderr}`);
-                                    return;
-                                }
-
-                                console.log(stdout);
-                            });
-                        } else {
-                            console.error(chalk.red.bold("You didn't write down the DuScript storage path, you can do it with the command:"));
-                            console.error("         ", chalk.white.underline("du request"))
-                        }
-                    } else {
-                        exec(`dus ${src}`, (error, stdout, stderr) => {
+        if (/\.du$/gm.test(src)) {
+            if (fs.existsSync(src)) {
+                let file = fs.readFileSync(src, { encoding: "utf-8" }).split(";")[0].replace(/\s/gm, "");
+                switch (file) {
+                    case "//duscript":
+                        exec("node ./DuScript/duScript.js " + src, (error, stdout, stderr) => {
                             if (error) {
-                                console.error(`${error.message}`);
+                                console.error(chalk.red.italic(`${error}`));
                                 return;
                             }
 
-                            if (stderr) {
-                                console.error(`${stderr}`);
-                                return;
-                            }
-
-                            console.log(stdout);
+                            console.log(`${stdout}`);
+                            console.error(`${stderr}`);
                         });
-                    }
-                });
-
-            } else if (file == "//duscharp") {
-                console.log(chalk.blue.bold("This feature is still under development."))
+                        break;
+                    case "//dusharp":
+                        console.error(chalk.red.bold("This feature is still under development."));
+                        break;
+                    default:
+                        console.error(chalk.red.bold("To start the file, you need to specify the du language type."));
+                        break;
+                }
             } else {
-                console.error(chalk.red.bold("To launch the file, you must specify the type of language du. \nExample:\n     // duscript;"))
+                console.error(chalk.red.bold("The file was not found."))
             }
         } else {
-            if (!/\\$/gm.test(src)) {
-                src += "\\";
-            }
-            if (fs.existsSync(path.join(src, "Door.json"))) {
-                let door = JSON.parse(fs.readFileSync(path.join(src, "Door.json")));
-
-                if (door.type) {
-                    if (door.type == "DuScript") {
-
-                        if (fs.existsSync("./src/dus.src")) {
-                            let sr = fs.readFileSync("./src/dus.src", { encoding: "utf-8" });
-                            let v = JSON.parse(fs.readFileSync(path.join(sr, "package.json"))).version;
-                            console.log(chalk.white.bold("DuScript@" + v + ": \n"));
-                        } else {
-                            console.log(chalk.white.bold("DuScript: \n"));
-                        }
-
-                        exec("where dus", (error, stdout, stderr) => {
-                            if (error) {
-                                console.error(`${error.message}`);
-                                return;
-                            }
-
-                            if (stderr || stdout.includes('Could not find files')) {
-                                if (fs.existsSync("./save/dus.src")) {
-                                    exec(`node ${path.join(fs.readFileSync("./src/dus.src", { encoding: "utf-8" }), "duScript.js")} ${src}`, (error, stdout, stderr) => {
-                                        if (error) {
-                                            console.error(`${error.message}`);
-                                            return;
-                                        }
-
-                                        if (stderr) {
-                                            console.error(`${stderr}`);
-                                            return;
-                                        }
-
-                                        console.log(stdout);
-                                    });
-                                } else {
-                                    console.error(chalk.red.bold("You didn't write down the DuScript storage path, you can do it with the command:"));
-                                    console.error("         ", chalk.white.underline("du request"))
-                                }
-                            } else {
-                                exec(`dus ${src}`, (error, stdout, stderr) => {
+            if (folderExists(src)) {
+                if (fs.existsSync(path.join(src, "Door.json"))) {
+                    let door = JSON.parse(fs.readFileSync(path.join(src, "Door.json"), { encoding: "utf-8" }));
+                    if (door.type) {
+                        switch (door.type) {
+                            case "DuScript":
+                                exec("node ./DuScript/duScript.js " + src, (error, stdout, stderr) => {
                                     if (error) {
-                                        console.error(`${error.message}`);
+                                        console.error(chalk.red.italic(`${error}`));
                                         return;
                                     }
 
-                                    if (stderr) {
-                                        console.error(`${stderr}`);
-                                        return;
-                                    }
-
-                                    console.log(stdout);
+                                    console.log(`${stdout}`);
+                                    console.error(`${stderr}`);
                                 });
-                            }
-                        });
-
-                    } else if (door.type == "DuScharp") {
-                        console.log(chalk.blue.bold("This feature is still under development."))
+                                break;
+                            case "DuSharp":
+                                console.error(chalk.red.bold("This feature is still under development."));
+                                break;
+                            default:
+                                console.error(chalk.red.bold("To start the folder, you need to specify the du language type."));
+                                break;
+                        }
                     } else {
-                        console.error(chalk.red.bold("To launch the file, you must specify the type of language du. \nExample:\n     \"type\": \"DuScript\""))
+                        console.error(chalk.red.bold("The type field was not specified in the Door.json file."))
                     }
                 } else {
-                    console.error(chalk.red.bold("There must be a type field in the Door.json file to run."));
+                    console.error(chalk.red.bold("To start the folder, it must contain the Door.json file."))
                 }
             } else {
-                console.error(chalk.red.bold("To start the directory, it must contain the Door.json file."));
+                console.error(chalk.red.bold("The folder was not found."))
             }
         }
     } else if (arg[2] == "install") {
-        exec(`npm install duscript -g`, (error, stdout, stderr) => {
+        exec(`npm install dupack -g`, (error, stdout, stderr) => {
             if (error) {
                 console.error(`${error.message}`);
                 return;
