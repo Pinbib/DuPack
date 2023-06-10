@@ -44,7 +44,7 @@ Now there are only two types of du:
 
 For Door.json, you need to set either DuScript or DuScharp in the field type.
 
-If the file itself is launched and not the directory, to specify the type, you need to add either ``` // duscript; ``` or ``` // duscharp; ``` in the first line.
+If the file itself is launched and not the directory, to specify the type, you need to add either ``` // duscript; ``` or ``` // dusharp; ``` in the first line.
 
 # run
 
